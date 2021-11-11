@@ -39,6 +39,10 @@ def day_page():
     root1.destroy()
     import Dailytab_nocode
 
+def month_page():
+    root1.destroy()
+    import overalltab_nocode
+
 root1 = tk.Tk()
 
 # set title
@@ -52,7 +56,7 @@ entry = tk.Entry()
 daily_button = tk.Button(root1, text="Daily", padx=150, pady=10, borderwidth=30, command=day_page)
 daily_button.place(x=200, y=50)
 
-monthly_button = tk.Button(root1, text="Monthly", padx=150, pady=10, borderwidth=30)
+monthly_button = tk.Button(root1, text="Monthly", padx=150, pady=10, borderwidth=30, command=month_page)
 monthly_button.place(x=900, y=50)
 
 cal_button1 = tk.Button(root1, text="Calculate", padx=20, pady=5, borderwidth=30, command=lambda: monthly_save(float(e2.get())))
