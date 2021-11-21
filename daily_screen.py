@@ -4,7 +4,7 @@ from tkinter import ttk
 from tkcalendar import *
 import target_screen as ts
 import uni_save
-
+import monthly_screen as ms
 
 
 class Screen:
@@ -16,7 +16,7 @@ class Screen:
         # push button
         self.daily_button = tk.Button(self.root2, text="Daily", padx=150, pady=10, borderwidth=30)
         self.daily_button.place(x=200, y=50)
-        self.monthly_button = tk.Button(self.root2, text="Monthly", padx=150, pady=10, borderwidth=30)
+        self.monthly_button = tk.Button(self.root2, text="Monthly", padx=150, pady=10, borderwidth=30, command=self.monthly )
         self.monthly_button.place(x=900, y=50)
         self.income_button = tk.Button(self.root2, text="Income", padx=30, pady=5, borderwidth=30, command=self.income)
         self.income_button.place(x=600, y=210)
@@ -57,9 +57,10 @@ class Screen:
         self.amount.place(x=600, y=170)
         self.e4 = tk.Entry(self.root2)
         self.e4.place(x=700, y=170)
+        # target
         self.new_data = uni_save.load_data("./user_data/cal.json")
         self.target = tk.Label(self.root2, text=self.new_data["daily"])
-        self.target.place(x=1050, y=150)
+        self.target.place(x=1125, y=150)
 
         # table
         self.table = ["Date", "Transaction", "Income", "Expense", "Balance"]
@@ -130,6 +131,9 @@ class Screen:
             label.place(x=1050, y=180)
         self.op_table.insert("", 'end', values=["", "", "", "", total])
 
+    def monthly(self):
+        self.root2.destroy()
+        ms.Screen()
 
 
 
