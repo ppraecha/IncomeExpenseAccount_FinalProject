@@ -1,0 +1,9 @@
+11/10/21 steak 40 income
+11/18/21 bts 16 expense
+11/18/21 bts 16 income
+11/18/21 cake 20 expense
+11/18/21 cake 20 income
+11/18/21 moo 5 Transportation income
+11/18/21 moo 5 Food income
+11/18/21 moo 5 Food expense
+11/14/21 cake 30000 Transportation expense
