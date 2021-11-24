@@ -42,6 +42,7 @@ class Screen:
         self.category = tk.Label(self.root2, text="Category:")
         self.category.place(x=600, y=140)
         self.options = [
+            "Income",
             "Transportation",
             "Food",
             "clothing",
@@ -65,7 +66,7 @@ class Screen:
         # table
         self.table = ["Date", "Transaction", "Income", "Expense", "Balance"]
         self.op_table = ttk.Treeview(self.root2, column=self.table, show="headings", height=27)
-        self.update_ls()
+        self.filter_month(12, 21)
         for i in self.table:
             self.op_table.heading(i, text=i.title())
         self.op_table.place(x=200, y=270)
@@ -76,12 +77,13 @@ class Screen:
         c = self.e4.get()
         d = self.clicked.get()
         data = [a, b, c, d, "income"]
-        print(d)
         print(data)
         with open("./user_data/trans_ls.txt", "a") as fa:
             fa.write(" ".join(data) + "\n")
             fa.close()
-        self.op_table.insert("", 'end', values=data[0:3])
+        a_split = list(map(int, a.split("/")))
+        self.filter_month(a_split[0], a_split[2])
+        # self.op_table.insert("", 'end', values=data[0:3])
 
     def expense(self):
         a = self.date.get_date()
@@ -123,17 +125,40 @@ class Screen:
             print(total)
             fr.close()
 
-        if total < -self.new_data["daily"]:
-            label = tk.Label(self.root2, bg="red", padx=100, pady=20)
-            label.place(x=1050, y=180)
-        else:
-            label = tk.Label(self.root2, bg="green", padx=100, pady=20)
-            label.place(x=1050, y=180)
-        self.op_table.insert("", 'end', values=["", "", "", "", total])
+            if total < self.new_data["daily"]:
+                label = tk.Label(self.root2, text=" ☹ Please TRY AGAIN TOMORROW", bg="red", padx=30, pady=20)
+                label.place(x=1050, y=180)
+            else:
+                label = tk.Label(self.root2, text=" ☻ Congratulation! GOOD JOB for today!", bg="green", padx=30, pady=20)
+                label.place(x=1050, y=180)
+            self.op_table.insert("", 'end', values=["", "", "", "", total])
 
     def monthly(self):
         self.root2.destroy()
         ms.Screen()
+
+    def filter_month(self, month, year):
+        # clear table
+        self.op_table.delete(*self.op_table.get_children())
+        with open("./user_data/trans_ls.txt", "r") as fr:
+            for line in fr:
+                data = line.strip("\n").split()
+                cur_date = list(map(int, data[0].split("/")))
+                if cur_date[0] != month or cur_date[2] != year:
+                    continue
+                if data[-1] == "income":
+                    self.op_table.insert("", 'end', values=data[0:3])
+                elif data[-1] == "expense":
+                    render_data = data[0:2] + [" ", data[2]]
+                    self.op_table.insert("", 'end', values=render_data)
+            fr.close()
+
+
+
+
+
+
+
 
 
 
