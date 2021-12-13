@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import daily_screen as ds
 import uni_save
+import monthly_screen as ms
 
 
 class Screen:
@@ -13,7 +14,7 @@ class Screen:
         # push button
         self.daily_button = tk.Button(self.root1, text="Daily", padx=150, pady=10, borderwidth=30, command=self.back)
         self.daily_button.place(x=200, y=50)
-        self.monthly_button = tk.Button(self.root1, text="Monthly", padx=150, pady=10, borderwidth=30)
+        self.monthly_button = tk.Button(self.root1, text="Monthly", padx=150, pady=10, borderwidth=30, command=self.monthly)
         self.monthly_button.place(x=900, y=50)
         self.cal_button = tk.Button(self.root1, text="Calculate", padx=20, pady=5, borderwidth=30, command=lambda:
                                      self.result(self.e1.get(), self.e2.get()))
@@ -36,7 +37,7 @@ class Screen:
         self.month_save.place(x=500, y=310)
         self.month_save.configure()
         # output2
-        self.day_spend = tk.Label(self.root1, text="Daily spending:")
+        self.day_spend = tk.Label(self.root1, text="Mothly spending:")
         self.day_spend.place(x=500, y=340)
         self.day_spend.configure()
         # call app
@@ -50,9 +51,9 @@ class Screen:
             if result1 > float(a):
                 messagebox.showinfo("NOT ENOUGH MONEY", "your income is lower than monthly saving, "
                                                         "please enter new value")
-            result2 = (float(a) - result1) // 31
+            result2 = (float(a) - result1)
             temp1 = "Monthly saving:" + str(result1)
-            temp2 = "Daily spending:" + str(result2)
+            temp2 = "Monthly spending:" + str(result2)
             self.month_save.configure(text=temp1)
             self.day_spend.configure(text=temp2)
             dict_data = {"monthly": result1, "daily": result2}
@@ -66,6 +67,9 @@ class Screen:
         self.root1.destroy()
         ds.Screen()
 
+    def monthly(self):
+        self.root1.destroy()
+        ms.Screen()
 
 
 
