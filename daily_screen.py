@@ -60,7 +60,7 @@ class Screen:
         self.e4.place(x=700, y=170)
         # target
         self.new_data = uni_save.load_data("./user_data/cal.json")
-        self.target = tk.Label(self.root2, text=self.new_data["daily"])
+        self.target = tk.Label(self.root2, text=self.new_data["monthly"])
         self.target.place(x=1125, y=150)
 
         # table
@@ -125,11 +125,12 @@ class Screen:
             print(total)
             fr.close()
 
-            if total < self.new_data["daily"]:
-                label = tk.Label(self.root2, text=" ☹ Please TRY AGAIN TOMORROW", bg="red", padx=30, pady=20)
+            if total > self.new_data["monthly"]:
+                label = tk.Label(self.root2, text=" ☻ Congratulation! GOOD JOB for this month!", bg="green", padx=30,
+                                 pady=20)
                 label.place(x=1050, y=180)
             else:
-                label = tk.Label(self.root2, text=" ☻ Congratulation! GOOD JOB for today!", bg="green", padx=30, pady=20)
+                label = tk.Label(self.root2, text=" ☹ Please TRY AGAIN NEXT MONTH", bg="red", padx=30, pady=20)
                 label.place(x=1050, y=180)
             self.op_table.insert("", 'end', values=["", "", "", "", total])
 
@@ -152,7 +153,6 @@ class Screen:
                     render_data = data[0:2] + [" ", data[2]]
                     self.op_table.insert("", 'end', values=render_data)
             fr.close()
-
 
 
 
