@@ -109,8 +109,9 @@ class Screen:
     def table(self):
         with open("./user_data/trans_ls.txt", "r") as readtable:
             for line in readtable:
-                if line[0] == "12":
-                    print(line)
+                data = line.strip("\n").split()
+                if data[0].split("/")[0] == "12":
+                    print(data)
             readtable.close()
 
     def years(self):
