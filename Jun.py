@@ -106,8 +106,9 @@ class Screen:
     def table(self):
         with open("./user_data/trans_ls.txt", "r") as readtable:
             for line in readtable:
-                if line[0] == "6":
-                    print(line)
+                data = line.strip("\n").split()
+                if data[0].split("/")[0] == "6":
+                    print(data)
             readtable.close()
 
     def years(self):
@@ -121,47 +122,3 @@ class Screen:
     def overall(self):
         self.root9.destroy()
         ms.Screen()
-
-    def Jan(self):
-        self.root9.destroy()
-        jan.Screen()
-
-    def Feb(self):
-        self.root9.destroy()
-        feb.Screen()
-
-    def Mar(self):
-        self.root9.destroy()
-        mar.Screen()
-
-    def Apr(self):
-        self.root9.destroy()
-        apr.Screen()
-
-    def May(self):
-        self.root9.destroy()
-        may.Screen()
-
-    def Jul(self):
-        self.root9.destroy()
-        jul.Screen()
-
-    def Aug(self):
-        self.root9.destroy()
-        aug.Screen()
-
-    def Sep(self):
-        self.root9.destroy()
-        sep.Screen()
-
-    def Oct(self):
-        self.root9.destroy()
-        oct.Screen()
-
-    def Nov(self):
-        self.root9.destroy()
-        nov.Screen()
-
-    def Dec(self):
-        self.root9.destroy()
-        dec.Screen()
