@@ -3,12 +3,15 @@ from tkinter import *
 from tkinter import ttk
 from tkcalendar import *
 import target_screen as ts
-import uni_save
+import uni_save as us
 import monthly_screen as ms
-
+from datetime import datetime
 
 class Screen:
     def __init__(self):
+        # date
+        self.date = datetime.today().strftime('%Y-%m-%d')
+        self.cur_year, self.cur_month, self.cur_date = self.date.split("-")
         # set up page
         self.root2 = tk.Tk()
         self.root2.title("HAPPY RICHIES")
@@ -30,7 +33,7 @@ class Screen:
         # input
         self.in_date = tk.Label(self.root2, text="Date:")
         self.in_date.place(x=244, y=120)
-        self.date = Calendar(self.root2, selectmode="day", year=2021, month=11, day=18)
+        self.date = Calendar(self.root2, selectmode="day", year=int(self.cur_year), month=int(self.cur_month), day=int(self.cur_date))
         self.date.place(x=300, y=110)
         # input2
         self.transaction = tk.Label(self.root2, text="Transaction:")
@@ -59,14 +62,16 @@ class Screen:
         self.e4 = tk.Entry(self.root2)
         self.e4.place(x=700, y=170)
         # target
-        self.new_data = uni_save.load_data("./user_data/cal.json")
+        self.new_data = us.load_data("./user_data/cal.json")
         self.target = tk.Label(self.root2, text=self.new_data["monthly"])
         self.target.place(x=1125, y=150)
+        # date
+
 
         # table
         self.table = ["Date", "Transaction", "Income", "Expense", "Balance"]
         self.op_table = ttk.Treeview(self.root2, column=self.table, show="headings", height=27)
-        self.filter_month(12, 21)
+        self.filter_month(int(self.cur_month), int(self.cur_year[2:4]))
         for i in self.table:
             self.op_table.heading(i, text=i.title())
         self.op_table.place(x=200, y=270)
@@ -96,7 +101,9 @@ class Screen:
             fa.write(" ".join(data) + "\n")
             fa.close()
         render_data = data[0:2] + [" ", data[2]]
-        self.op_table.insert("", 'end', values=render_data)
+        # self.op_table.insert("", 'end', values=render_data)
+        a_split = list(map(int, a.split("/")))
+        self.filter_month(a_split[0], a_split[2])
 
     def target(self):
         self.root2.destroy()
@@ -114,25 +121,39 @@ class Screen:
             fr.close()
 
     def balance(self):
+        temp_date = self.date.get_date().split("/")
+        temp_month, temp_year = temp_date[0], temp_date[2]
+        self.filter_month(int(temp_month), int(temp_year))
+        print(temp_date)
+        print(temp_month)
+        print(temp_year)
         total = 0
         with open("./user_data/trans_ls.txt", "r") as fr:
             for line in fr:
                 data = line.strip("\n").split()
-                if data[-1] == "income":
+                line_date = data[0].split("/")
+                if data[-1] == "income" and line_date[0] == temp_month and line_date[2] == temp_year:
                     total += int(data[2])
-                elif data[-1] == "expense":
+                elif data[-1] == "expense" and line_date[0] == temp_month and line_date[2] == temp_year:
                     total -= int(data[2])
+            print(data)
             print(total)
             fr.close()
 
             if total > self.new_data["monthly"]:
                 label = tk.Label(self.root2, text=" ☻ Congratulation! GOOD JOB for this month!", bg="green", padx=30,
-                                 pady=20)
+                                 pady=20, width=30)
                 label.place(x=1050, y=180)
             else:
-                label = tk.Label(self.root2, text=" ☹ Please TRY AGAIN NEXT MONTH", bg="red", padx=30, pady=20)
+                label = tk.Label(self.root2, text=" ☹ Please TRY AGAIN NEXT MONTH", bg="red", padx=30, pady=20, width=30)
                 label.place(x=1050, y=180)
             self.op_table.insert("", 'end', values=["", "", "", "", total])
+
+            bal_dict = us.load_data("./user_data/balance.json")
+            print(bal_dict)
+            bal_key = str(temp_month) + "/" + str(temp_year)
+            bal_dict[bal_key] = total
+            us.save_data(bal_dict, "./user_data/balance.json")
 
     def monthly(self):
         self.root2.destroy()
@@ -153,12 +174,3 @@ class Screen:
                     render_data = data[0:2] + [" ", data[2]]
                     self.op_table.insert("", 'end', values=render_data)
             fr.close()
-
-
-
-
-
-
-
-
-
