@@ -1,9 +1,12 @@
 import tkinter as tk
 import daily_screen as ds
-import uni_save
+import uni_save as us
 import monthly_screen as ms
 from tkinter import messagebox
 from tkinter import ttk
+import matplotlib.pyplot as plt
+from pandas import DataFrame
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import Jan as jan
 import Feb as feb
 import Mar as mar
@@ -15,8 +18,6 @@ import Aug as aug
 import Sep as sep
 import Oct as oct
 import Dec as dec
-import matplotlib.pyplot as plt
-import csv
 
 
 class Screen:
@@ -84,14 +85,38 @@ class Screen:
         self.year_2011.place(x=1100, y=100)
         self.year_2010 = tk.Button(self.root14, text="2010", padx=20, pady=10, borderwidth=30, command=self.years)
         self.year_2010.place(x=1190, y=100)
+
         # input saving
+        self.data = us.load_data("./user_data/balance.json")
+        self.save = tk.Label(self.root14, text=self.data["11/21"])
+        self.save.place(x=1300, y=480)
+        self.save_save = tk.Label(self.root14, text="Saving:")
+        self.save_save.place(x=1200, y=480)
 
         # input target save
-        self.new_data = uni_save.load_data("./user_data/cal.json")
+        self.new_data = us.load_data("./user_data/cal.json")
         self.target = tk.Label(self.root14, text=self.new_data["monthly"])
-        self.target.place(x=1300, y=700)
+        self.target.place(x=1300, y=500)
         self.target_save = tk.Label(self.root14, text="Target Saving:")
-        self.target_save.place(x=1200, y=700)
+        self.target_save.place(x=1200, y=500)
+
+        # input Differences
+        self.minus = int(self.data["11/21"]) - int(self.new_data["monthly"])
+        self.minus_show = tk.Label(self.root14, text=self.minus)
+        self.minus_show.place(x=1300, y=530)
+        self.dif_save = tk.Label(self.root14, text="Differences:")
+        self.dif_save.place(x=1200, y=530)
+
+        # show congrats
+        if self.data["11/21"] > self.new_data["monthly"]:
+            label = tk.Label(self.root14, text=" ☻ Congratulation!" + "\n" + "GOOD JOB for this month!", bg="green",
+                             padx=30,
+                             pady=20, width=14, height=10)
+            label.place(x=1200, y=560)
+        else:
+            label = tk.Label(self.root14, text=" ☹ Please" + "\n" + "TRY AGAIN NEXT MONTH", bg="red", padx=30, pady=20,
+                             width=14, height=10)
+            label.place(x=1200, y=560)
 
         # table
         self.table = ["Date", "Transaction", "Income", "Expense", "Balance"]
@@ -100,19 +125,55 @@ class Screen:
             self.op_table.heading(i, text=i.title())
         self.op_table.place(x=380, y=150)
 
+        # show table
+        with open("./user_data/trans_ls.txt", "r") as self.readtable:
+            for line in self.readtable:
+                self.data = line.strip("\n").split()
+                if self.data[0].split("/")[0] == "11":
+                    if self.data[-1] == "income":
+                        self.op_table.insert("", 'end', values=self.data[0:3])
+                    elif self.data[-1] == "expense":
+                        render_data = self.data[0:2] + [" ", self.data[2]]
+                        self.op_table.insert("", 'end', values=render_data)
+            self.readtable.close()
+
+        # graph
+        self.food = 0
+        self.trans = 0
+        self.cloth = 0
+        self.mis = 0
+        self.health = 0
+        self.data_new = {}
+        with open("./user_data/trans_ls.txt", "r") as self.fr:
+            for line in self.fr:
+                self.data = line.strip("\n").split()
+                if self.data[0].split("/")[0] == "11":
+                    if self.data[3] == "Food":
+                        self.food += int(self.data[2])
+                    elif self.data[3] == "Transportation":
+                        self.trans += int(self.data[2])
+                    elif self.data[3] == "clothing":
+                        self.cloth += int(self.data[2])
+                    elif self.data[3] == "Miscellaneous":
+                        self.mis += int(self.data[2])
+                    elif self.data[3] == "Healthcare":
+                        self.health += int(self.data[2])
+        self.data_new["Category"] = ["Food", "Transportation", "Clothing", "Miscellaneous", "Healthcare"]
+        self.data_new["Expense"] = [self.food, self.trans, self.cloth, self.mis, self.health]
+
+        self.df = DataFrame(self.data_new, columns=["Category", "Expense"])
+
+        self.figure1 = plt.Figure(figsize=(10, 4.8), dpi=100)
+        self.ax1 = self.figure1.add_subplot(111)
+        self.bar = FigureCanvasTkAgg(self.figure1, self.root14)
+        self.bar.get_tk_widget().place(x=380, y=440)
+        self.df = self.df[["Category", "Expense"]].groupby("Category").sum()
+        self.df.plot(kind="bar", legend=True, ax=self.ax1, rot=0)
+        self.ax1.set_title('Monthly Expense by Category')
+
         # call app
         self.root14.mainloop()
 
-    # def graph(self):
-    #     with open("./user_data/trans_ls.txt", "r") as fr:
-
-    def table(self):
-        with open("./user_data/trans_ls.txt", "r") as readtable:
-            for line in readtable:
-                data = line.strip("\n").split()
-                if data[0].split("/")[0] == "11":
-                    print(data)
-            readtable.close()
 
     def years(self):
         messagebox.showinfo("ERROR", "No Data Found")
