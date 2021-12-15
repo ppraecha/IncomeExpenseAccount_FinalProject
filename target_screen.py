@@ -12,14 +12,18 @@ class Screen:
         self.root1.title("HAPPY RICHIES")
         self.root1.geometry("1500x1000")
         # push button
-        self.daily_button = tk.Button(self.root1, text="Daily", padx=150, pady=10, borderwidth=30, command=self.back)
+        self.daily_button = tk.Button(self.root1, text="Daily", padx=150,
+                                      pady=10, borderwidth=30, command=self.back)
         self.daily_button.place(x=200, y=50)
-        self.monthly_button = tk.Button(self.root1, text="Monthly", padx=150, pady=10, borderwidth=30, command=self.monthly)
+        self.monthly_button = tk.Button(self.root1, text="Monthly", padx=150,
+                                        pady=10, borderwidth=30, command=self.monthly)
         self.monthly_button.place(x=900, y=50)
-        self.cal_button = tk.Button(self.root1, text="Calculate", padx=20, pady=5, borderwidth=30, command=lambda:
-                                     self.result(self.e1.get(), self.e2.get()))
+        self.cal_button = tk.Button(self.root1, text="Calculate", padx=20,
+                                    pady=5, borderwidth=30, command=lambda:
+                                    self.result(self.e1.get(), self.e2.get()))
         self.cal_button.place(x=900, y=340)
-        self.back_button = tk.Button(self.root1, text="Back", padx=20, pady=10, borderwidth=30, command=self.back)
+        self.back_button = tk.Button(self.root1, text="Back", padx=20,
+                                     pady=10, borderwidth=30, command=self.back)
         self.back_button.place(x=200, y=400)
         # label
         # input 1
@@ -37,7 +41,7 @@ class Screen:
         self.month_save.place(x=500, y=310)
         self.month_save.configure()
         # output2
-        self.day_spend = tk.Label(self.root1, text="Mothly spending:")
+        self.day_spend = tk.Label(self.root1, text="Monthly spending:")
         self.day_spend.place(x=500, y=340)
         self.day_spend.configure()
         # call app
@@ -70,7 +74,3 @@ class Screen:
     def monthly(self):
         self.root1.destroy()
         ms.Screen()
-
-
-
-

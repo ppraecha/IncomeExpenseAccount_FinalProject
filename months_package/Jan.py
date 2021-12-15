@@ -7,17 +7,17 @@ from tkinter import ttk
 import matplotlib.pyplot as plt
 from pandas import DataFrame
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import Feb as feb
-import Mar as mar
-import Apr as apr
-import May as may
-import Jun as jun
-import Jul as jul
-import Aug as aug
-import Sep as sep
-import Oct as oct
-import Nov as nov
-import Dec as dec
+from months_package import Feb
+from months_package import Mar
+from months_package import Apr
+from months_package import May
+from months_package import Jun
+from months_package import Jul
+from months_package import Aug
+from months_package import Sep
+from months_package import Oct
+from months_package import Nov
+from months_package import Dec
 
 
 class Screen:
@@ -29,34 +29,36 @@ class Screen:
         # push button
         self.daily_button = tk.Button(self.root4, text="Daily", padx=150, pady=10, borderwidth=30, command=self.daily)
         self.daily_button.place(x=200, y=50)
-        self.monthly_button = tk.Button(self.root4, text="Monthly", padx=150, pady=10, borderwidth=30, command=self.overall)
+        self.monthly_button = tk.Button(self.root4, text="Monthly", padx=150,
+                                        pady=10, borderwidth=30, command=self.overall)
         self.monthly_button.place(x=900, y=50)
         # moth push button
-        self.overall_button = tk.Button(self.root4, text="Overall", padx=50, pady=10, borderwidth=30, command=self.overall)
+        self.overall_button = tk.Button(self.root4, text="Overall", padx=50,
+                                        pady=10, borderwidth=30, command=self.overall)
         self.overall_button.place(x=200, y=150)
         self.jan_button = tk.Button(self.root4, text="January", padx=47, pady=10, borderwidth=30)
         self.jan_button.place(x=200, y=190)
-        self.feb_button = tk.Button(self.root4, text="February", padx=44, pady=10, borderwidth=30, command=self.Feb)
+        self.feb_button = tk.Button(self.root4, text="February", padx=44, pady=10, borderwidth=30, command=self.feb)
         self.feb_button.place(x=200, y=230)
-        self.mar_button = tk.Button(self.root4, text="March", padx=52, pady=10, borderwidth=30, command=self.Mar)
+        self.mar_button = tk.Button(self.root4, text="March", padx=52, pady=10, borderwidth=30, command=self.mar)
         self.mar_button.place(x=200, y=270)
-        self.apr_button = tk.Button(self.root4, text="April", padx=58, pady=10, borderwidth=30, command=self.Apr)
+        self.apr_button = tk.Button(self.root4, text="April", padx=58, pady=10, borderwidth=30, command=self.apr)
         self.apr_button.place(x=200, y=310)
-        self.may_button = tk.Button(self.root4, text="May", padx=59, pady=10, borderwidth=30, command=self.May)
+        self.may_button = tk.Button(self.root4, text="May", padx=59, pady=10, borderwidth=30, command=self.may)
         self.may_button.place(x=200, y=350)
-        self.jun_button = tk.Button(self.root4, text="June", padx=57, pady=10, borderwidth=30, command=self.Jun)
+        self.jun_button = tk.Button(self.root4, text="June", padx=57, pady=10, borderwidth=30, command=self.jun)
         self.jun_button.place(x=200, y=390)
-        self.jul_button = tk.Button(self.root4, text="July", padx=60, pady=10, borderwidth=30, command=self.Jul)
+        self.jul_button = tk.Button(self.root4, text="July", padx=60, pady=10, borderwidth=30, command=self.jul)
         self.jul_button.place(x=200, y=430)
-        self.aug_button = tk.Button(self.root4, text="August", padx=51, pady=10, borderwidth=30, command=self.Aug)
+        self.aug_button = tk.Button(self.root4, text="August", padx=51, pady=10, borderwidth=30, command=self.aug)
         self.aug_button.place(x=200, y=470)
-        self.sep_button = tk.Button(self.root4, text="September", padx=39, pady=10, borderwidth=30, command=self.Sep)
+        self.sep_button = tk.Button(self.root4, text="September", padx=39, pady=10, borderwidth=30, command=self.sep)
         self.sep_button.place(x=200, y=510)
-        self.oct_button = tk.Button(self.root4, text="October", padx=48, pady=10, borderwidth=30, command=self.Oct)
+        self.oct_button = tk.Button(self.root4, text="October", padx=48, pady=10, borderwidth=30, command=self.oct)
         self.oct_button.place(x=200, y=550)
-        self.nov_button = tk.Button(self.root4, text="November", padx=42, pady=10, borderwidth=30, command=self.Nov)
+        self.nov_button = tk.Button(self.root4, text="November", padx=42, pady=10, borderwidth=30, command=self.nov)
         self.nov_button.place(x=200, y=590)
-        self.dec_button = tk.Button(self.root4, text="December", padx=42, pady=10, borderwidth=30, command=self.Dec)
+        self.dec_button = tk.Button(self.root4, text="December", padx=42, pady=10, borderwidth=30, command=self.dec)
         self.dec_button.place(x=200, y=630)
         # year push button
         self.year_2021 = tk.Button(self.root4, text="2021", padx=20, pady=10, borderwidth=30, command=self.overall)
@@ -107,11 +109,12 @@ class Screen:
 
         # show congrats
         if self.data["1/21"] > self.new_data["monthly"]:
-            label = tk.Label(self.root4, text=" ☻ Congratulation!" + "\n" + "GOOD JOB for this month!", bg="green", padx=30,
-                             pady=20, width=14, height=10)
+            label = tk.Label(self.root4, text=" ☻ Congratulation!" + "\n" + "GOOD JOB for this month!",
+                             bg="green", padx=30, pady=20, width=14, height=10)
             label.place(x=1200, y=560)
         else:
-            label = tk.Label(self.root4, text=" ☹ Please" + "\n" + "TRY AGAIN NEXT MONTH", bg="red", padx=30, pady=20, width=14, height=10)
+            label = tk.Label(self.root4, text=" ☹ Please" + "\n" + "TRY AGAIN NEXT MONTH",
+                             bg="red", padx=30, pady=20, width=14, height=10)
             label.place(x=1200, y=560)
 
         # table
@@ -170,17 +173,9 @@ class Screen:
         # call app
         self.root4.mainloop()
 
-    def table(self):
-        with open("./user_data/trans_ls.txt", "r") as readtable:
-            for line in readtable:
-                data = line.strip("\n").split()
-                if data[0].split("/")[0] == "1":
-                    print(data)
-            readtable.close()
-
-    def years(self):
+    @ staticmethod
+    def years():
         messagebox.showinfo("ERROR", "No Data Found")
-        exit(0)
 
     def daily(self):
         self.root4.destroy()
@@ -190,46 +185,46 @@ class Screen:
         self.root4.destroy()
         ms.Screen()
 
-    def Feb(self):
+    def feb(self):
         self.root4.destroy()
-        feb.Screen()
+        Feb.Screen()
 
-    def Mar(self):
+    def mar(self):
         self.root4.destroy()
-        mar.Screen()
+        Mar.Screen()
 
-    def Apr(self):
+    def apr(self):
         self.root4.destroy()
-        apr.Screen()
+        Apr.Screen()
 
-    def May(self):
+    def may(self):
         self.root4.destroy()
-        may.Screen()
+        May.Screen()
 
-    def Jun(self):
+    def jun(self):
         self.root4.destroy()
-        jun.Screen()
+        Jun.Screen()
 
-    def Jul(self):
+    def jul(self):
         self.root4.destroy()
-        jul.Screen()
+        Jul.Screen()
 
-    def Aug(self):
+    def aug(self):
         self.root4.destroy()
-        aug.Screen()
+        Aug.Screen()
 
-    def Sep(self):
+    def sep(self):
         self.root4.destroy()
-        sep.Screen()
+        Sep.Screen()
 
-    def Oct(self):
+    def oct(self):
         self.root4.destroy()
-        oct.Screen()
+        Oct.Screen()
 
-    def Nov(self):
+    def nov(self):
         self.root4.destroy()
-        nov.Screen()
+        Nov.Screen()
 
-    def Dec(self):
+    def dec(self):
         self.root4.destroy()
-        dec.Screen()
+        Dec.Screen()
