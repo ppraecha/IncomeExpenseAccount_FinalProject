@@ -1,7 +1,10 @@
 import tkinter as tk
 import daily_screen as ds
-import uni_save
+import uni_save as us
 from tkinter import messagebox
+import matplotlib.pyplot as plt
+from pandas import DataFrame
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import Jan as jan
 import Feb as feb
 import Mar as mar
@@ -14,8 +17,7 @@ import Sep as sep
 import Oct as oct
 import Nov as nov
 import Dec as dec
-import matplotlib.pyplot as plt
-import csv
+
 
 class Screen:
     def __init__(self):
@@ -23,11 +25,13 @@ class Screen:
         self.root3 = tk.Tk()
         self.root3.title("HAPPY RICHIES")
         self.root3.geometry("1500x1000")
+
         # push button
         self.daily_button = tk.Button(self.root3, text="Daily", padx=150, pady=10, borderwidth=30, command=self.daily)
         self.daily_button.place(x=200, y=50)
         self.monthly_button = tk.Button(self.root3, text="Monthly", padx=150, pady=10, borderwidth=30)
         self.monthly_button.place(x=900, y=50)
+
         # moth push button
         self.overall_button = tk.Button(self.root3, text="Overall", padx=50, pady=10, borderwidth=30)
         self.overall_button.place(x=200, y=150)
@@ -55,6 +59,7 @@ class Screen:
         self.nov_button.place(x=200, y=590)
         self.dec_button = tk.Button(self.root3, text="December", padx=42, pady=10, borderwidth=30, command=self.Dec)
         self.dec_button.place(x=200, y=630)
+
         # year push button
         self.year_2021 = tk.Button(self.root3, text="2021", padx=20, pady=10, borderwidth=30)
         self.year_2021.place(x=200, y=100)
@@ -80,21 +85,39 @@ class Screen:
         self.year_2011.place(x=1100, y=100)
         self.year_2010 = tk.Button(self.root3, text="2010", padx=20, pady=10, borderwidth=30, command=self.years)
         self.year_2010.place(x=1190, y=100)
-        # input
-        self.new_data = uni_save.load_data("./user_data/cal.json")
-        self.target = tk.Label(self.root3, text=self.new_data["monthly"])
-        self.target.place(x=300, y=700)
 
+        # input
+        self.total = 0
+        self.data = us.load_data("./user_data/balance.json")
+        for line in self.data:
+            self.total += self.data[line]
+        self.target = tk.Label(self.root3, text=self.total)
+        self.target.place(x=300, y=700)
         self.tol_save = tk.Label(self.root3, text="Total Saving:")
         self.tol_save.place(x=200, y=700)
+
+        # graph
+        self.data_new = {}
+        self.line_ls = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        self.save = []
+        self.data = us.load_data("./user_data/balance.json")
+        for line in self.data:
+            self.save.append(int(self.data[line]))
+        self.data_new["Month"] = self.line_ls
+        self.data_new["Saving"] = self.save
+
+        self.df = DataFrame.sort_index(self.data_new, columns=["Month", "Saving"])
+
+        self.figure1 = plt.Figure(figsize=(14, 8), dpi=100)
+        self.ax1 = self.figure1.add_subplot(111)
+        self.bar = FigureCanvasTkAgg(self.figure1, self.root3)
+        self.bar.get_tk_widget().place(x=360, y=150)
+        self.df = self.df[["Month", "Saving"]].groupby("Month").sum()
+        self.df.plot(kind="bar", legend=True, ax=self.ax1)
+        self.ax1.set_title('Saving per Month')
+
         # call app
         self.root3.mainloop()
-
-    # def graph(self):
-    #     with open("./user_data/trans_ls.txt", "r") as fr:
-
-    # def target:
-    #     total = 0
 
     def years(self):
         messagebox.showinfo("ERROR", "No Data Found")
@@ -151,3 +174,8 @@ class Screen:
     def Dec(self):
         self.root3.destroy()
         dec.Screen()
+
+
+
+
+
