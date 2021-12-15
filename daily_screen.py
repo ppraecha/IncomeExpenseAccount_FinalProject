@@ -7,6 +7,7 @@ import uni_save as us
 import monthly_screen as ms
 from datetime import datetime
 
+
 class Screen:
     def __init__(self):
         # date
@@ -56,17 +57,17 @@ class Screen:
         self.clicked.set(self.options[0])
         self.drop = OptionMenu(self.root2, self.clicked, *self.options)
         self.drop.place(x=700, y=140)
+
         # input4
         self.amount = tk.Label(self.root2, text="Amount:")
         self.amount.place(x=600, y=170)
         self.e4 = tk.Entry(self.root2)
         self.e4.place(x=700, y=170)
+
         # target
         self.new_data = us.load_data("./user_data/cal.json")
         self.target = tk.Label(self.root2, text=self.new_data["monthly"])
         self.target.place(x=1125, y=150)
-        # date
-
 
         # table
         self.table = ["Date", "Transaction", "Income", "Expense", "Balance"]
@@ -88,7 +89,6 @@ class Screen:
             fa.close()
         a_split = list(map(int, a.split("/")))
         self.filter_month(a_split[0], a_split[2])
-        # self.op_table.insert("", 'end', values=data[0:3])
 
     def expense(self):
         a = self.date.get_date()
@@ -100,8 +100,6 @@ class Screen:
         with open("./user_data/trans_ls.txt", "a") as fa:
             fa.write(" ".join(data) + "\n")
             fa.close()
-        render_data = data[0:2] + [" ", data[2]]
-        # self.op_table.insert("", 'end', values=render_data)
         a_split = list(map(int, a.split("/")))
         self.filter_month(a_split[0], a_split[2])
 
