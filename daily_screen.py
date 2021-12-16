@@ -4,7 +4,7 @@ from tkinter import ttk
 from tkcalendar import *
 import target_screen as ts
 import uni_save as us
-import monthly_screen as ms
+import month as ms
 from datetime import datetime
 
 

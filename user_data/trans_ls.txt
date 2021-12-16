@@ -473,4 +473,4 @@
 12/28/21 Chocolate 300 Food expense
 12/29/21 Hospital 200 Healthcare expense
 12/30/21 breakfast 250 Food expense
-12/31/21 salad 350 Food expense
+12/31/21 salad 350 Food expense10/10/21 Movie 170 Miscellaneous expense

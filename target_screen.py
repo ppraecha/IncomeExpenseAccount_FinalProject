@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import daily_screen as ds
 import uni_save
-import monthly_screen as ms
+import month as ms
 
 
 class Screen:
